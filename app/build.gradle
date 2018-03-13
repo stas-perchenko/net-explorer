@@ -1,0 +1,80 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
+        classpath 'com.google.gms:google-services:3.1.0'
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+
+apply plugin: 'com.android.application'
+//apply plugin: 'io.fabric'
+apply plugin: 'me.tatarka.retrolambda'  // We still must use retrolambda because of the DataBinding compatibility issues!
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.alperez.androidnetexplorer"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            lintOptions {
+                disable 'MissingTranslation'
+            }
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                def outputFile = output.outputFile
+                if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                    def newFileName = outputFile.name.replace('.apk', "-${versionName}.apk")
+                    output.outputFile = new File(outputFile.parent, newFileName)
+                }
+            }
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile "com.android.support:support-v4:${rootProject.supportLibVersion}"
+    compile "com.android.support:appcompat-v7:${rootProject.supportLibVersion}"
+    compile "com.android.support:design:${rootProject.supportLibVersion}"
+    compile "com.android.support:cardview-v7:${rootProject.supportLibVersion}"
+    compile "com.android.support:recyclerview-v7:${rootProject.supportLibVersion}"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    annotationProcessor 'com.google.auto.value:auto-value:1.2'
+    annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
+    compile 'com.google.auto.value:auto-value:1.2'
+}
