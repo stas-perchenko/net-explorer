@@ -10,4 +10,6 @@
     <color name="text_color_enabled_selected_neutral">#303F9F</color>
     <color name="text_color_enabled_selected_red">#E03515</color>
     <color name="text_color_enabled_selected_green">#65E045</color>
+
+    <color name="divider_color">#A5A5A5</color>
 </resources>

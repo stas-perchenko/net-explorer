@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Net Explorer</string>
+
+    <string name="default_active_network">Default Active Network</string>
+    <string name="item_section_title_network">Network</string>
+    <string name="item_section_title_net_info">Network Info</string>
+    <string name="item_section_title_net_capabilities">Capabilities</string>
+    <string name="item_section_title_link_props">Link Properties</string>
 </resources>
