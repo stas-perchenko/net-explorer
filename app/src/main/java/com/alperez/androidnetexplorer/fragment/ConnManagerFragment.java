@@ -2,8 +2,12 @@ package com.alperez.androidnetexplorer.fragment;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.LinkProperties;
 import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.net.NetworkRequest;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -37,6 +41,7 @@ public class ConnManagerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mConnManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
     }
 
 
@@ -80,12 +85,20 @@ public class ConnManagerFragment extends Fragment {
         RecyclerView vRec = (RecyclerView) vContent.findViewById(R.id.recycler);
         vRec.setHasFixedSize(false);
         vRec.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        mConnManager.registerNetworkCallback(netRequestAll, netCallback);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         populateData();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mConnManager.unregisterNetworkCallback(netCallback);
     }
 
     private void populateData() {
@@ -122,5 +135,64 @@ public class ConnManagerFragment extends Fragment {
         }
         return buffer.toArray(new NetworkItemModel[buffer.size()]);
     }
+
+
+    private final ConnectivityManager.NetworkCallback netCallback = new ConnectivityManager.NetworkCallback() {
+        @Override
+        public void onAvailable(Network network) {
+            getActivity().runOnUiThread(() -> populateData());
+        }
+
+        @Override
+        public void onLosing(Network network, int maxMsToLive) {
+            getActivity().runOnUiThread(() -> populateData());
+        }
+
+        @Override
+        public void onLost(Network network) {
+            getActivity().runOnUiThread(() -> populateData());
+        }
+
+        @Override
+        public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
+            getActivity().runOnUiThread(() -> {
+                if (adapter != null) adapter.updateNetworkCapabilities(network, networkCapabilities);
+            });
+        }
+
+        @Override
+        public void onLinkPropertiesChanged(Network network, LinkProperties linkProperties) {
+            getActivity().runOnUiThread(() -> {
+                if (adapter != null) adapter.updateLinkProperties(network, linkProperties);
+            });
+        }
+    };
+
+
+    private final NetworkRequest netRequestAll = new NetworkRequest.Builder()
+            /*.addCapability(NetworkCapabilities.NET_CAPABILITY_MMS)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_SUPL)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_DUN)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_FOTA)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_IMS)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_CBS)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_WIFI_P2P)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_IA)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_RCS)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_XCAP)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_EIMS)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED)
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)
+            .addCapability((Build.VERSION.SDK_INT >= 23) ? NetworkCapabilities.NET_CAPABILITY_VALIDATED : NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .addCapability((Build.VERSION.SDK_INT >= 23) ? NetworkCapabilities.NET_CAPABILITY_CAPTIVE_PORTAL : NetworkCapabilities.NET_CAPABILITY_INTERNET)*/
+            .addTransportType(NetworkCapabilities.TRANSPORT_BLUETOOTH)
+            .addTransportType(NetworkCapabilities.TRANSPORT_VPN)
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .build();
 
 }

@@ -37,7 +37,7 @@ public abstract class NetworkItemModel {
         public abstract NetworkItemModel build();
     }
 
-    abstract Builder toBuilder();
+    public abstract Builder toBuilder();
 
     public static Builder builder() {
         return new AutoValue_NetworkItemModel.Builder();

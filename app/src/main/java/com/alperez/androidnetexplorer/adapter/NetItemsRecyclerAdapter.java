@@ -2,6 +2,9 @@ package com.alperez.androidnetexplorer.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -33,6 +36,30 @@ public class NetItemsRecyclerAdapter extends RecyclerView.Adapter<NetItemsRecycl
             mData.add(item);
         }
         notifyDataSetChanged();
+    }
+
+    public boolean updateNetworkCapabilities(Network network, NetworkCapabilities netCaps) {
+        for (int i=0; i<mData.size(); i++) {
+            NetworkItemModel item = mData.get(i);
+            if (item.network().equals(network)) {
+                mData.set(i, item.toBuilder().setNetworkCapabilities(netCaps).build());
+                notifyItemChanged(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean updateLinkProperties(Network network, LinkProperties linkProps) {
+        for (int i=0; i<mData.size(); i++) {
+            NetworkItemModel item = mData.get(i);
+            if (item.network().equals(network)) {
+                mData.set(i, item.toBuilder().setLinkProperties(linkProps).build());
+                notifyItemChanged(i);
+                return true;
+            }
+        }
+        return false;
     }
 
 
