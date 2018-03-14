@@ -9,4 +9,30 @@
 
     <string name="default_network_active">Default network is active</string>
     <string name="default_network_not_active">Default network is NOT active</string>
+
+    <string name="property_network_id">Android network ID:</string>
+    <string name="property_network_handle">Android network NDK handle:</string>
+
+    <string name="state_available">Available</string>
+    <string name="state_connected">Connected</string>
+    <string name="state_failover">Failover</string>
+
+    <string name="property_network_type">Type (name/code):</string>
+    <string name="property_network_subtype">Subtype (name/code):</string>
+    <string name="type_subtype_template" formatted="false">%s (%d)</string>
+    <string name="property_network_extra_info">Extra info:</string>
+    <string name="property_network_status">State (detailed state):</string>
+    <string name="status_template" formatted="false">%s (%s)</string>
+
+    <string name="cap_wifi_p2p">WiFi P2P</string>
+    <string name="cap_internet">Internet</string>
+    <string name="cap_mms">MMS</string>
+    <string name="cap_not_metered">Not metered</string>
+    <string name="cap_restricted">Restricted</string>
+    <string name="cap_trusted">Trusted</string>
+
+    <string name="property_network_speed">Bandwidth (up/down):</string>
+    <string name="property_network_transport">Network transport:</string>
+    <string name="net_speed_template" formatted="false">%s / %s Kbps</string>
+    <string name="property_network_secondary_caps">Other capabilities:</string>
 </resources>

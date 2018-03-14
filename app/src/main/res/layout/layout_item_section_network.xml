@@ -4,21 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" alias="V"/>
+        <import type="android.os.Build" alias="Build"/>
+
         <variable
             name="network"
             type="android.net.Network"/>
 
     </data>
 
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:shrinkColumns="1"
+        android:stretchColumns="1">
+        <TableRow
+            android:layout_marginTop="@dimen/item_content_margin">
+            <TextView
+                style="@style/Text.ItemProperty.Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/property_network_id"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{network.toString()}"/>
+            <TextView
+                style="@style/Text.ItemProperty.Value.SelectableNeutral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/item_content_margin"
+                android:text="@{network.toString()}"/>
+        </TableRow>
 
-    </LinearLayout>
+        <TableRow
+            android:layout_marginTop="@dimen/item_content_margin"
+            android:visibility="@{(Build.VERSION.SDK_INT >= 23) ? V.VISIBLE : V.GONE}">
+            <TextView
+                style="@style/Text.ItemProperty.Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/property_network_handle"/>
+
+            <TextView
+                style="@style/Text.ItemProperty.Value.SelectableNeutral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/item_content_margin"
+                app:number_text="@{(Build.VERSION.SDK_INT >= 23) ? network.networkHandle : 0}"/>
+        </TableRow>
+    </TableLayout>
+
 </layout>

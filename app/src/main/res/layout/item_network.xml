@@ -59,7 +59,7 @@
             <include layout="@layout/layout_item_section_network_capabilities"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:capabilities="@{netItemModel.networkCapabilities}"/>
+                app:netCaps="@{netItemModel.networkCapabilities}"/>
 
             <include layout="@layout/layout_item_section_title"
                 app:sectionName="@{@string/item_section_title_link_props}"/>

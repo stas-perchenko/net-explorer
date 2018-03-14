@@ -4,8 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" alias="V"/>
+        <import type="android.os.Build" alias="Build"/>
+        <import type="android.text.TextUtils" alias="TU"/>
+        <import type="android.net.NetworkCapabilities" alias="NCaps"/>
+
         <variable
-            name="capabilities"
+            name="netCaps"
             type="android.net.NetworkCapabilities"/>
 
     </data>
@@ -15,10 +20,138 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="21dp"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Text.ItemProperty.Value.SelectableGreen"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/bg_rect_frame"
+                android:text="@string/cap_wifi_p2p"
+                app:selected="@{(netCaps != null) ? netCaps.hasCapability(NCaps.NET_CAPABILITY_WIFI_P2P) : false}" />
+
+            <TextView
+                style="@style/Text.ItemProperty.Value.SelectableGreen"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:background="@drawable/bg_rect_frame"
+                android:text="@string/cap_internet"
+                app:selected="@{(netCaps != null) ? netCaps.hasCapability(NCaps.NET_CAPABILITY_INTERNET) : false}" />
+
+            <TextView
+                style="@style/Text.ItemProperty.Value.SelectableGreen"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/bg_rect_frame"
+                android:text="@string/cap_mms"
+                app:selected="@{(netCaps != null) ? netCaps.hasCapability(NCaps.NET_CAPABILITY_MMS) : false}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="21dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/item_content_margin">
+            <TextView
+                style="@style/Text.ItemProperty.Value.SelectableGreen"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/bg_rect_frame"
+                android:text="@string/cap_not_metered"
+                app:selected="@{(netCaps != null) ? netCaps.hasCapability(NCaps.NET_CAPABILITY_NOT_METERED) : false}" />
+
+            <TextView
+                style="@style/Text.ItemProperty.Value.SelectableRed"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:background="@drawable/bg_rect_frame"
+                android:text="@string/cap_restricted"
+                app:selected="@{(netCaps != null) ? !netCaps.hasCapability(NCaps.NET_CAPABILITY_NOT_RESTRICTED) : false}" />
+
+            <TextView
+                style="@style/Text.ItemProperty.Value.SelectableGreen"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/bg_rect_frame"
+                android:text="@string/cap_trusted"
+                app:selected="@{(netCaps != null) ? netCaps.hasCapability(NCaps.NET_CAPABILITY_TRUSTED) : false}" />
+        </LinearLayout>
+
+
+        <TableLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{capabilities.toString()}"/>
+            android:stretchColumns="1"
+            android:shrinkColumns="1">
+
+            <TableRow
+                android:layout_marginTop="@dimen/item_content_margin" >
+                <TextView
+                    style="@style/Text.ItemProperty.Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/property_network_speed"/>
+
+                <TextView
+                    style="@style/Text.ItemProperty.Value.SelectableNeutral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/item_content_margin"
+                    android:text="@{(netCaps != null) ? String.format(@string/net_speed_template, netCaps.linkUpstreamBandwidthKbps, netCaps.linkDownstreamBandwidthKbps) : null}"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="@dimen/item_content_margin" >
+                <TextView
+                    style="@style/Text.ItemProperty.Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/property_network_transport"/>
+
+                <TextView
+                    style="@style/Text.ItemProperty.Value.SelectableNeutral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/item_content_margin"
+                    app:networkTransport="@{netCaps}"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="@dimen/item_content_margin" >
+                <TextView
+                    style="@style/Text.ItemProperty.Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/property_network_secondary_caps"/>
+
+                <TextView
+                    style="@style/Text.ItemProperty.Value.SelectableNeutral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/item_content_margin"
+                    app:secondaryCapabilities="@{netCaps}"/>
+            </TableRow>
+
+        </TableLayout>
+
 
     </LinearLayout>
 </layout>
