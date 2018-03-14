@@ -94,7 +94,7 @@ public class ConnManagerFragment extends Fragment {
         vTxtDefaultNetActive.setText(getString(isActive ? R.string.default_network_active : R.string.default_network_not_active));
 
         if (adapter == null) {
-            adapter = new NetItemsRecyclerAdapter(getData());
+            adapter = new NetItemsRecyclerAdapter(getContext(), getData());
             ((RecyclerView) vContent.findViewById(R.id.recycler)).setAdapter(adapter);
         } else {
             adapter.replaceData(getData());
