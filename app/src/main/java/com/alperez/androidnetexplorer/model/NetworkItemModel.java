@@ -4,6 +4,7 @@ import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 
@@ -18,8 +19,11 @@ public abstract class NetworkItemModel {
 
     public abstract boolean isActiveDefaultDataNetwork();
     public abstract Network network();
+    @Nullable
     public abstract NetworkInfo networkInfo();
+    @Nullable
     public abstract NetworkCapabilities networkCapabilities();
+    @Nullable
     public abstract LinkProperties linkProperties();
 
     @AutoValue.Builder

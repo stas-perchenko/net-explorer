@@ -6,4 +6,7 @@
     <string name="item_section_title_net_info">Network Info</string>
     <string name="item_section_title_net_capabilities">Capabilities</string>
     <string name="item_section_title_link_props">Link Properties</string>
+
+    <string name="default_network_active">Default network is active</string>
+    <string name="default_network_not_active">Default network is NOT active</string>
 </resources>
